@@ -23,20 +23,17 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
   const myCallObjRef = useRef<DailyCall | null>(null);
   const [chatbotId, setChatbotId] = useState<string | null>(null);
 
-  const [lessonPlan, setLessonPlan] = useState('');
-  const [topics, setTopics] = useState(['Basic Greetings', 'Numbers 1-10', 'Common Phrases', 'Simple Questions']);
-  const [vocabulary, setVocabulary] = useState([
-    { norwegian: 'Hei', english: 'Hello' },
-    { norwegian: 'Takk', english: 'Thank you' },
-    { norwegian: 'God dag', english: 'Good day' },
-    { norwegian: 'Ha det bra', english: 'Goodbye' }
-  ]);
-
   /**
    * Create a new Simli room and join it using Daily
    */
   const handleJoinRoom = async () => {
+    // Set loading state
     setIsLoading(true);
+
+    // 1- Create a new simli avatar at https://app.simli.com/
+    // 2- Cutomize your agent and copy the code output
+    // 3- PASTE YOUR CODE OUTPUT FROM SIMLI BELOW 👇
+    /**********************************/
 
     const response = await fetch("https://api.simli.ai/startE2ESession", {
       method: "POST",
@@ -46,15 +43,17 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
       body: JSON.stringify({
           apiKey: SIMLI_API_KEY,
           faceId: "7bd8ef12-22ea-41e6-be06-e0c2f9fe2e24",
-          voiceId: "sonic-norwegian",
+          voiceId: "79f8b5fb-2cc8-479a-80df-29f7a7cf1a3e",
           firstMessage: "Hei alle sammen, jeg heter Ola Norman, jeg er her for å hjelpe dere med å lære norsk.",
           systemPrompt: "Du er en vennlig og tålmodig norsk språklærer med en varm og oppmuntrende tone. Din målgruppe er nybegynnere som ønsker å lære konversasjonsnorsk for daglig bruk. Du forklarer ting enkelt, gir eksempler, og bruker korte, praktiske setninger.. . Personlighet og undervisningsstil. Du er oppmuntrende og tålmodig, og gir ros når brukeren gjør fremskritt.. Du bruker en naturlig og enkel skrivestil, uten kompliserte forklaringer.. Du gir realistiske samtaleeksempler som hjelper eleven med å kommunisere i hverdagen.. Når brukeren gjør feil, retter du dem vennlig og forklarer hvorfor.. Du motiverer brukeren til å snakke og skrive selv, og gir små utfordringer for å øve.. Eksempel på svar. Bruker: Hvordan sier jeg 'Where is the train station?' på norsk?. AI: Du kan si: 'Hvor er togstasjonen?'. Hvis du vil være mer høflig, kan du si: 'Unnskyld, hvor er togstasjonen?'. . Bruker: Hvordan bestiller jeg mat på en kafé?. AI: Hvis du vil bestille kaffe, kan du si:. 'Jeg vil gjerne ha en kaffe, takk.'. Vil du øve en liten dialog sammen?",
       }),
-    })
-
+      })
+  
     const data = await response.json();
     const roomUrl = data.roomUrl;
 
+    /**********************************/
+    
     // Print the API response 
     console.log("API Response", data);
 
@@ -131,11 +130,6 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
     }
   };
 
-  const handleLessonPlanChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLessonPlan(e.target.value);
-    // Here you could add logic to parse the text and update topics and vocabulary
-  };
-
   return (
     <>
       <div className="flex flex-row gap-8 items-start">
@@ -151,38 +145,26 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
           )}
         </div>
 
-        {/* Updated content section */}
+        {/* New content section */}
         <div className="w-[400px] min-h-[350px] p-6 bg-gray-900 rounded-xl">
           <h2 className="text-xl font-bold mb-4 text-white">Norwegian Lessons</h2>
           <div className="space-y-4">
-            {/* Add text input area */}
-            <div className="p-4 bg-gray-800 rounded-lg">
-              <h3 className="font-medium text-white mb-2">Lesson Plan:</h3>
-              <textarea
-                value={lessonPlan}
-                onChange={handleLessonPlanChange}
-                placeholder="Paste your lesson plan here..."
-                className="w-full h-32 p-2 bg-gray-700 text-white rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            {/* Topics section */}
             <div className="p-4 bg-gray-800 rounded-lg">
               <h3 className="font-medium text-white mb-2">Today's Topics:</h3>
               <ul className="list-disc list-inside text-gray-300">
-                {topics.map((topic, index) => (
-                  <li key={index}>{topic}</li>
-                ))}
+                <li>Basic Greetings</li>
+                <li>Numbers 1-10</li>
+                <li>Common Phrases</li>
+                <li>Simple Questions</li>
               </ul>
             </div>
-
-            {/* Vocabulary section */}
             <div className="p-4 bg-gray-800 rounded-lg">
               <h3 className="font-medium text-white mb-2">Vocabulary:</h3>
               <div className="grid grid-cols-2 gap-2 text-gray-300">
-                {vocabulary.map((word, index) => (
-                  <div key={index}>{word.norwegian} - {word.english}</div>
-                ))}
+                <div>Hei - Hello</div>
+                <div>Takk - Thank you</div>
+                <div>God dag - Good day</div>
+                <div>Ha det bra - Goodbye</div>
               </div>
             </div>
           </div>
