@@ -27,7 +27,6 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
    * Create a new Simli room and join it using Daily
    */
   const handleJoinRoom = async () => {
-    // Set loading state
     setIsLoading(true);
 
     // 1- Create a new simli avatar at https://app.simli.com/
@@ -39,43 +38,52 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
       method: "POST",
       headers: {
           "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-          apiKey: SIMLI_API_KEY,
-          faceId: "7bd8ef12-22ea-41e6-be06-e0c2f9fe2e24",
-          voiceId: "sonic-norwegian",
-          firstMessage: "Hei alle sammen, jeg heter Ola Norman, jeg er her for å hjelpe dere med å lære norsk.",
-          systemPrompt: "Du er en vennlig og tålmodig norsk språklærer med en varm og oppmuntrende tone. Din målgruppe er nybegynnere som ønsker å lære konversasjonsnorsk for daglig bruk. Du forklarer ting enkelt, gir eksempler, og bruker korte, praktiske setninger.. . Personlighet og undervisningsstil. Du er oppmuntrende og tålmodig, og gir ros når brukeren gjør fremskritt.. Du bruker en naturlig og enkel skrivestil, uten kompliserte forklaringer.. Du gir realistiske samtaleeksempler som hjelper eleven med å kommunisere i hverdagen.. Når brukeren gjør feil, retter du dem vennlig og forklarer hvorfor.. Du motiverer brukeren til å snakke og skrive selv, og gir små utfordringer for å øve.. Eksempel på svar. Bruker: Hvordan sier jeg 'Where is the train station?' på norsk?. AI: Du kan si: 'Hvor er togstasjonen?'. Hvis du vil være mer høflig, kan du si: 'Unnskyld, hvor er togstasjonen?'. . Bruker: Hvordan bestiller jeg mat på en kafé?. AI: Hvis du vil bestille kaffe, kan du si:. 'Jeg vil gjerne ha en kaffe, takk.'. Vil du øve en liten dialog sammen?",
-      }),
-      })
-  
-  const data = await response.json();
-  const roomUrl = data.roomUrl;
+          Authorization: `Bearer ${SIMLI_API_KEY}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Room creation response:", data); // Debug log
 
     /**********************************/
     
     // Print the API response 
     console.log("API Response", data);
 
-    // Create a new Daily call object
-    let newCallObject = DailyIframe.getCallInstance();
-    if (newCallObject === undefined) {
-      newCallObject = DailyIframe.createCallObject({
-        videoSource: false,
-      });
+      // Create a new Daily call object
+      let newCallObject = DailyIframe.getCallInstance();
+      if (newCallObject === undefined) {
+        newCallObject = DailyIframe.createCallObject({
+          videoSource: false,
+        });
+      }
+
+      // Setting my default username
+      newCallObject.setUserName("User");
+
+      // Join the Daily room
+      try {
+        await newCallObject.join({ url: roomUrl });
+        myCallObjRef.current = newCallObject;
+        console.log("Joined the room with callObject", newCallObject);
+        setCallObject(newCallObject);
+
+        // Start checking if Simli's Chatbot Avatar is available
+        loadChatbot();
+      } catch (joinError) {
+        console.error("Error joining room:", joinError);
+        setIsLoading(false);
+        throw joinError;
+      }
+    } catch (error) {
+      console.error("Error in handleJoinRoom:", error);
+      setIsLoading(false);
+      // You might want to show an error message to the user here
     }
-
-    // Setting my default username
-    newCallObject.setUserName("User");
-
-    // Join the Daily room
-    await newCallObject.join({ url: roomUrl });
-    myCallObjRef.current = newCallObject;
-    console.log("Joined the room with callObject", newCallObject);
-    setCallObject(newCallObject);
-
-    // Start checking if Simli's Chatbot Avatar is available
-    loadChatbot();
   };  
 
   /**
