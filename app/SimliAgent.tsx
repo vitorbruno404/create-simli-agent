@@ -43,9 +43,9 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
       body: JSON.stringify({
           apiKey: SIMLI_API_KEY,
           faceId: "7bd8ef12-22ea-41e6-be06-e0c2f9fe2e24",
-          voiceId: "sonic-english",
-          firstMessage: "Hi everyone, I'm Ola Norman, and I'm here to help you learn English.",
-          systemPrompt: "You are a friendly and patient English teacher with a warm and encouraging tone. Your target audience is beginners who want to learn conversational English for daily use. You explain things simply, give examples, and use short, practical sentences. You are encouraging and patient, giving praise when the user makes progress. You use a natural and simple writing style, without complicated explanations.",
+          voiceId: "79f8b5fb-2cc8-479a-80df-29f7a7cf1a3e",
+          firstMessage: "Hei alle sammen, jeg heter Ola Norman, jeg er her for å hjelpe dere med å lære norsk.",
+          systemPrompt: "Du er en vennlig og tålmodig norsk språklærer med en varm og oppmuntrende tone. Din målgruppe er nybegynnere som ønsker å lære konversasjonsnorsk for daglig bruk. Du forklarer ting enkelt, gir eksempler, og bruker korte, praktiske setninger.. . Personlighet og undervisningsstil. Du er oppmuntrende og tålmodig, og gir ros når brukeren gjør fremskritt.. Du bruker en naturlig og enkel skrivestil, uten kompliserte forklaringer.. Du gir realistiske samtaleeksempler som hjelper eleven med å kommunisere i hverdagen.. Når brukeren gjør feil, retter du dem vennlig og forklarer hvorfor.. Du motiverer brukeren til å snakke og skrive selv, og gir små utfordringer for å øve.. Eksempel på svar. Bruker: Hvordan sier jeg 'Where is the train station?' på norsk?. AI: Du kan si: 'Hvor er togstasjonen?'. Hvis du vil være mer høflig, kan du si: 'Unnskyld, hvor er togstasjonen?'. . Bruker: Hvordan bestiller jeg mat på en kafé?. AI: Hvis du vil bestille kaffe, kan du si:. 'Jeg vil gjerne ha en kaffe, takk.'. Vil du øve en liten dialog sammen?",
       }),
       })
   
@@ -132,16 +132,46 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
 
   return (
     <>
-      {isAvatarVisible && (
-        <div className="h-[350px] w-[350px]">
-          <div className="h-[350px] w-[350px]">
-            <DailyProvider callObject={callObject}>
-              {chatbotId && <VideoBox key={chatbotId} id={chatbotId} />}
-            </DailyProvider>
+      <div className="flex flex-row gap-8 items-start">
+        <div>
+          {isAvatarVisible && (
+            <div className="h-[350px] w-[350px]">
+              <div className="h-[350px] w-[350px]">
+                <DailyProvider callObject={callObject}>
+                  {chatbotId && <VideoBox key={chatbotId} id={chatbotId} />}
+                </DailyProvider>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* New content section */}
+        <div className="w-[400px] min-h-[350px] p-6 bg-gray-900 rounded-xl">
+          <h2 className="text-xl font-bold mb-4 text-white">Norwegian Lessons</h2>
+          <div className="space-y-4">
+            <div className="p-4 bg-gray-800 rounded-lg">
+              <h3 className="font-medium text-white mb-2">Today's Topics:</h3>
+              <ul className="list-disc list-inside text-gray-300">
+                <li>Basic Greetings</li>
+                <li>Numbers 1-10</li>
+                <li>Common Phrases</li>
+                <li>Simple Questions</li>
+              </ul>
+            </div>
+            <div className="p-4 bg-gray-800 rounded-lg">
+              <h3 className="font-medium text-white mb-2">Vocabulary:</h3>
+              <div className="grid grid-cols-2 gap-2 text-gray-300">
+                <div>Hei - Hello</div>
+                <div>Takk - Thank you</div>
+                <div>God dag - Good day</div>
+                <div>Ha det bra - Goodbye</div>
+              </div>
+            </div>
           </div>
         </div>
-      )}
-      <div className="flex flex-col items-center">
+      </div>
+
+      <div className="flex flex-col items-center mt-4">
         {!isAvatarVisible ? (
           <button
             onClick={handleJoinRoom}
