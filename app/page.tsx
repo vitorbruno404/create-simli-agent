@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import SimliAgent from "@/app/SimliAgent";
 import DottedFace from "./Components/DottedFace";
 import SimliHeaderLogo from "./Components/Logo";
-import Navbar from "./Components/Navbar";
 import Image from "next/image";
 import GitHubLogo from "@/media/github-mark-white.svg";
 
@@ -23,7 +22,6 @@ const Demo: React.FC = () => {
   return (
     <div className="bg-black min-h-screen flex flex-col items-center font-abc-repro font-normal text-sm text-white p-8">
       <SimliHeaderLogo />
-      <Navbar />
 
       <div className="absolute top-[32px] right-[32px]">
         <text

@@ -13,6 +13,8 @@ const IconSparkleLoader = ({ className, isBlack = false }: Props) => {
     <Image
       src={sparkle}
       alt="loader"
+      width={20}
+      height={20}
       className={cn(
         isBlack ? "filter invert" : "",
         className

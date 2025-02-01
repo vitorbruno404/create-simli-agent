@@ -27,6 +27,7 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
    * Create a new Simli room and join it using Daily
    */
   const handleJoinRoom = async () => {
+    // Set loading state
     setIsLoading(true);
 
     // 1- Create a new simli avatar at https://app.simli.com/
@@ -38,52 +39,43 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
       method: "POST",
       headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${SIMLI_API_KEY}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Room creation response:", data); // Debug log
+      },
+      body: JSON.stringify({
+          apiKey: SIMLI_API_KEY,
+          faceId: "7bd8ef12-22ea-41e6-be06-e0c2f9fe2e24",
+          voiceId: "sonic-english",
+          firstMessage: "Hi everyone, I'm Ola Norman, and I'm here to help you learn English.",
+          systemPrompt: "You are a friendly and patient English teacher with a warm and encouraging tone. Your target audience is beginners who want to learn conversational English for daily use. You explain things simply, give examples, and use short, practical sentences. You are encouraging and patient, giving praise when the user makes progress. You use a natural and simple writing style, without complicated explanations.",
+      }),
+      })
+  
+    const data = await response.json();
+    const roomUrl = data.roomUrl;
 
     /**********************************/
     
     // Print the API response 
     console.log("API Response", data);
 
-      // Create a new Daily call object
-      let newCallObject = DailyIframe.getCallInstance();
-      if (newCallObject === undefined) {
-        newCallObject = DailyIframe.createCallObject({
-          videoSource: false,
-        });
-      }
-
-      // Setting my default username
-      newCallObject.setUserName("User");
-
-      // Join the Daily room
-      try {
-        await newCallObject.join({ url: roomUrl });
-        myCallObjRef.current = newCallObject;
-        console.log("Joined the room with callObject", newCallObject);
-        setCallObject(newCallObject);
-
-        // Start checking if Simli's Chatbot Avatar is available
-        loadChatbot();
-      } catch (joinError) {
-        console.error("Error joining room:", joinError);
-        setIsLoading(false);
-        throw joinError;
-      }
-    } catch (error) {
-      console.error("Error in handleJoinRoom:", error);
-      setIsLoading(false);
-      // You might want to show an error message to the user here
+    // Create a new Daily call object
+    let newCallObject = DailyIframe.getCallInstance();
+    if (newCallObject === undefined) {
+      newCallObject = DailyIframe.createCallObject({
+        videoSource: false,
+      });
     }
+
+    // Setting my default username
+    newCallObject.setUserName("User");
+
+    // Join the Daily room
+    await newCallObject.join({ url: roomUrl });
+    myCallObjRef.current = newCallObject;
+    console.log("Joined the room with callObject", newCallObject);
+    setCallObject(newCallObject);
+
+    // Start checking if Simli's Chatbot Avatar is available
+    loadChatbot();
   };  
 
   /**
