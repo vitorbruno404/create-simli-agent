@@ -23,6 +23,15 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
   const myCallObjRef = useRef<DailyCall | null>(null);
   const [chatbotId, setChatbotId] = useState<string | null>(null);
 
+  const [lessonPlan, setLessonPlan] = useState('');
+  const [topics, setTopics] = useState(['Basic Greetings', 'Numbers 1-10', 'Common Phrases', 'Simple Questions']);
+  const [vocabulary, setVocabulary] = useState([
+    { norwegian: 'Hei', english: 'Hello' },
+    { norwegian: 'Takk', english: 'Thank you' },
+    { norwegian: 'God dag', english: 'Good day' },
+    { norwegian: 'Ha det bra', english: 'Goodbye' }
+  ]);
+
   /**
    * Create a new Simli room and join it using Daily
    */
@@ -130,6 +139,11 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
     }
   };
 
+  const handleLessonPlanChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setLessonPlan(e.target.value);
+    // Here you could add logic to parse the text and update topics and vocabulary
+  };
+
   return (
     <>
       <div className="flex flex-row gap-8 items-start">
@@ -145,26 +159,38 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
           )}
         </div>
 
-        {/* New content section */}
+        {/* Updated content section */}
         <div className="w-[400px] min-h-[350px] p-6 bg-gray-900 rounded-xl">
           <h2 className="text-xl font-bold mb-4 text-white">Norwegian Lessons</h2>
           <div className="space-y-4">
+            {/* Add text input area */}
+            <div className="p-4 bg-gray-800 rounded-lg">
+              <h3 className="font-medium text-white mb-2">Lesson Plan:</h3>
+              <textarea
+                value={lessonPlan}
+                onChange={handleLessonPlanChange}
+                placeholder="Paste your lesson plan here..."
+                className="w-full h-32 p-2 bg-gray-700 text-white rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Topics section */}
             <div className="p-4 bg-gray-800 rounded-lg">
               <h3 className="font-medium text-white mb-2">Today's Topics:</h3>
               <ul className="list-disc list-inside text-gray-300">
-                <li>Basic Greetings</li>
-                <li>Numbers 1-10</li>
-                <li>Common Phrases</li>
-                <li>Simple Questions</li>
+                {topics.map((topic, index) => (
+                  <li key={index}>{topic}</li>
+                ))}
               </ul>
             </div>
+
+            {/* Vocabulary section */}
             <div className="p-4 bg-gray-800 rounded-lg">
               <h3 className="font-medium text-white mb-2">Vocabulary:</h3>
               <div className="grid grid-cols-2 gap-2 text-gray-300">
-                <div>Hei - Hello</div>
-                <div>Takk - Thank you</div>
-                <div>God dag - Good day</div>
-                <div>Ha det bra - Goodbye</div>
+                {vocabulary.map((word, index) => (
+                  <div key={index}>{word.norwegian} - {word.english}</div>
+                ))}
               </div>
             </div>
           </div>
