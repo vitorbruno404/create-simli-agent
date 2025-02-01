@@ -36,13 +36,7 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
    * Create a new Simli room and join it using Daily
    */
   const handleJoinRoom = async () => {
-    // Set loading state
     setIsLoading(true);
-
-    // 1- Create a new simli avatar at https://app.simli.com/
-    // 2- Cutomize your agent and copy the code output
-    // 3- PASTE YOUR CODE OUTPUT FROM SIMLI BELOW 👇
-    /**********************************/
 
     const response = await fetch("https://api.simli.ai/startE2ESession", {
       method: "POST",
@@ -52,17 +46,15 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
       body: JSON.stringify({
           apiKey: SIMLI_API_KEY,
           faceId: "7bd8ef12-22ea-41e6-be06-e0c2f9fe2e24",
-          voiceId: "79f8b5fb-2cc8-479a-80df-29f7a7cf1a3e",
+          voiceId: "sonic-norwegian",
           firstMessage: "Hei alle sammen, jeg heter Ola Norman, jeg er her for å hjelpe dere med å lære norsk.",
           systemPrompt: "Du er en vennlig og tålmodig norsk språklærer med en varm og oppmuntrende tone. Din målgruppe er nybegynnere som ønsker å lære konversasjonsnorsk for daglig bruk. Du forklarer ting enkelt, gir eksempler, og bruker korte, praktiske setninger.. . Personlighet og undervisningsstil. Du er oppmuntrende og tålmodig, og gir ros når brukeren gjør fremskritt.. Du bruker en naturlig og enkel skrivestil, uten kompliserte forklaringer.. Du gir realistiske samtaleeksempler som hjelper eleven med å kommunisere i hverdagen.. Når brukeren gjør feil, retter du dem vennlig og forklarer hvorfor.. Du motiverer brukeren til å snakke og skrive selv, og gir små utfordringer for å øve.. Eksempel på svar. Bruker: Hvordan sier jeg 'Where is the train station?' på norsk?. AI: Du kan si: 'Hvor er togstasjonen?'. Hvis du vil være mer høflig, kan du si: 'Unnskyld, hvor er togstasjonen?'. . Bruker: Hvordan bestiller jeg mat på en kafé?. AI: Hvis du vil bestille kaffe, kan du si:. 'Jeg vil gjerne ha en kaffe, takk.'. Vil du øve en liten dialog sammen?",
       }),
-      })
-  
+    })
+
     const data = await response.json();
     const roomUrl = data.roomUrl;
 
-    /**********************************/
-    
     // Print the API response 
     console.log("API Response", data);
 
