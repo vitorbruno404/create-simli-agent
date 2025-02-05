@@ -16,12 +16,23 @@ const SimliHeaderLogo = ({ className, children }: Props) => {
 
   const handleClick = async () => {
     console.log('Clicked Simli logo', pathname);
-    window.open('https://simli.com');
+    window.open('https://www.simli.com/?utm_source=vitorbruno.com&utm_medium=banner&utm_campaign=VitorBruno.Com&utm_id=norskproven');
   };
 
   return (
-    <div className={cn('fixed top-[32px] left-[32px] cursor-pointer', className)} onClick={handleClick}>
-      <Image src={logo} className='Logo' alt='Simli logo' />
+    <div className={cn('fixed top-[32px] left-[32px] flex flex-col gap-4', className)}>
+      <a href="https://vitorbruno.com" target="_blank" rel="noopener noreferrer">
+        <Image 
+          src="https://vitorbruno.com/wp-content/uploads/2023/07/Vitor-Bruno-Logo-blue.png"
+          width={100}
+          height={50}
+          alt="Vitor Bruno logo"
+          className="cursor-pointer"
+        />
+      </a>
+      <div className="cursor-pointer" onClick={handleClick}>
+        <Image src={logo} className='Logo' alt='Simli logo' />
+      </div>
     </div>
   );
 };

@@ -26,7 +26,7 @@ const Demo: React.FC = () => {
       <div className="absolute top-[32px] right-[32px]">
         <text
           onClick={() => {
-            window.open("https://github.com/simliai/create-simli-agent");
+            window.open("https://github.com/simliai/create-simli-agent?utm_source=vitorbruno.com&utm_medium=banner&utm_campaign=VitorBruno.Com&utm_id=norskproven");
           }}
           className="font-bold cursor-pointer text-xl leading-8"
         >
