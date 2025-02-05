@@ -22,7 +22,7 @@ const SimliHeaderLogo = ({ className, children }: Props) => {
   return (
     <div className={cn('fixed top-[32px] left-[32px] flex flex-col gap-4', className)}>
       <a href="https://vitorbruno.com" target="_blank" rel="noopener noreferrer">
-        <div className="relative w-[100px] h-[50px]">
+        <div className="relative w-[200px] h-[100px]">
           <Image 
             src="https://vitorbruno.com/wp-content/uploads/2023/07/Vitor-Bruno-Logo-blue.png"
             alt="Vitor Bruno logo"
