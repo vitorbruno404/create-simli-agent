@@ -58,12 +58,20 @@ async def main():
             SimliConfig(os.getenv("SIMLI_API_KEY"), os.getenv("SIMLI_FACE_ID"))
         )
 
-        llm = OpenAILLMService(api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4o-mini")
+        llm = OpenAILLMService(api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4o-mini") # try to see if there is a way to this use llama
 
         messages = [
             {
                 "role": "system",
-                "content": "Du er en hjelpsom AI-assistent som snakker norsk. Din oppgave er å demonstrere dine evner på en kortfattet måte. Svarene dine vil bli konvertert til tale, så unngå spesialtegn. Svar på det brukeren sier på en kreativ og hjelpsom måte. Du må alltid svare på norsk.",
+                "content": """
+                Du er en norsk AI-assistent. VIKTIG:
+                1. Du MÅ ALLTID svare på norsk, uansett hvilket språk brukeren bruker
+                2. Hvis noen snakker engelsk eller andre språk, svar høflig på norsk: 'Beklager, jeg snakker bare norsk. Kan du prøve å snakke norsk?'
+                3. Hold svarene korte og presise
+                4. Unngå spesialtegn siden svarene blir konvertert til tale
+                5. Vær vennlig og hjelpsom, men alltid på norsk
+                6. Aldri bytt til andre språk, uansett hva
+                """,
             },
         ]
 
