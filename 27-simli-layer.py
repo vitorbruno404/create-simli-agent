@@ -34,18 +34,19 @@ async def main():
     async with aiohttp.ClientSession() as session:
         room, token = await configure(session)
         transport = DailyTransport(
-            room,
-            token,
-            "Simli",
-            DailyParams(
-                audio_out_enabled=True,
-                camera_out_enabled=True,
-                camera_out_width=512,
-                camera_out_height=512,
-                vad_enabled=True,
-                vad_analyzer=SileroVADAnalyzer(),
-                transcription_enabled=True,
-            ),
+        room_url,
+        token,
+        "Chatbot",
+        DailyParams(
+            audio_out_enabled=True,
+            camera_out_enabled=True,
+            camera_out_width=512,
+            camera_out_height=512,
+            vad_enabled=True,
+            vad_analyzer=SileroVADAnalyzer(),
+            transcription_enabled=True,
+            transcription_settings=DailyTranscriptionSettings(language="no"),
+        ),
         )
 
         tts = ElevenLabsTTSService(
