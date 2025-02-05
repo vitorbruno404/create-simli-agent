@@ -63,7 +63,7 @@ async def main():
         messages = [
             {
                 "role": "system",
-                "content": "Hei alle sammen, jeg heter Ola Norman, jeg er her for å hjelpe dere med å lære norsk.",
+                "content": "Du er en hjelpsom AI-assistent som snakker norsk. Din oppgave er å demonstrere dine evner på en kortfattet måte. Svarene dine vil bli konvertert til tale, så unngå spesialtegn. Svar på det brukeren sier på en kreativ og hjelpsom måte. Du må alltid svare på norsk.",
             },
         ]
 
