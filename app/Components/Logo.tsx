@@ -22,13 +22,15 @@ const SimliHeaderLogo = ({ className, children }: Props) => {
   return (
     <div className={cn('fixed top-[32px] left-[32px] flex flex-col gap-4', className)}>
       <a href="https://vitorbruno.com" target="_blank" rel="noopener noreferrer">
-        <Image 
-          src="https://vitorbruno.com/wp-content/uploads/2023/07/Vitor-Bruno-Logo-blue.png"
-          width={100}
-          height={50}
-          alt="Vitor Bruno logo"
-          className="cursor-pointer"
-        />
+        <div className="relative w-[100px] h-[50px]">
+          <Image 
+            src="https://vitorbruno.com/wp-content/uploads/2023/07/Vitor-Bruno-Logo-blue.png"
+            alt="Vitor Bruno logo"
+            fill
+            style={{ objectFit: 'contain' }}
+            priority
+          />
+        </div>
       </a>
       <div className="cursor-pointer" onClick={handleClick}>
         <Image src={logo} className='Logo' alt='Simli logo' />
