@@ -52,7 +52,8 @@ async def main():
         tts = ElevenLabsTTSService(
             api_key=os.getenv("ELEVENLABS_API_KEY", ""),
             voice_id=os.getenv("ELEVENLABS_VOICE_ID", "2dhHLsmg0MVma2t041qT"),
-        )
+            model_id="eleven_multilingual_v2"
+)
 
         simli_ai = SimliVideoService(
             SimliConfig(os.getenv("SIMLI_API_KEY"), os.getenv("SIMLI_FACE_ID"))
