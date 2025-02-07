@@ -1,0 +1,1 @@
+This is a chatbot that uses Simli AI to help me practice Norwegian for the Norwegian language exam.
