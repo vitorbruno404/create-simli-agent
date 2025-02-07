@@ -1,0 +1,77 @@
+import requests
+import os
+from typing import Dict, Any, Optional
+from dotenv import load_dotenv
+
+class SimliSessionError(Exception):
+    """Custom exception for Simli session errors"""
+    pass
+
+def start_e2e_session() -> Dict[Any, Any]:
+    """
+    Initiates an E2E session with Simli AI.
+    Returns the API response as a dictionary.
+    
+    Raises:
+        SimliSessionError: If required environment variables are missing
+        requests.exceptions.RequestException: If the API request fails
+    """
+    # Load environment variables
+    load_dotenv()
+    
+    # Required environment variables
+    required_vars = {
+        "SIMLI_API_KEY": os.getenv("SIMLI_API_KEY"),
+        "SIMLI_FACE_ID": os.getenv("SIMLI_FACE_ID"),
+        "ELEVENLABS_API_KEY": os.getenv("ELEVENLABS_API_KEY"),
+        "ELEVENLABS_VOICE_ID": os.getenv("ELEVENLABS_VOICE_ID")
+    }
+
+    # Check for missing environment variables
+    missing_vars = [key for key, value in required_vars.items() if not value]
+    if missing_vars:
+        raise SimliSessionError(f"Missing required environment variables: {', '.join(missing_vars)}")
+    
+    # API configuration
+    url = "https://api.simli.ai/startE2ESession"
+    headers = {"Content-Type": "application/json"}
+    
+    # Session configuration
+    payload = {
+        "apiKey": required_vars["SIMLI_API_KEY"],
+        "faceId": required_vars["SIMLI_FACE_ID"],
+        "ttsProvider": "ElevenLabs",
+        "ttsAPIKey": required_vars["ELEVENLABS_API_KEY"],
+        "ttsModel": "eleven_multilingual_v2",
+        "voiceId": required_vars["ELEVENLABS_VOICE_ID"],
+        "systemPrompt": os.getenv("SYSTEM_PROMPT", 
+            "Du er en vennlig og tålmodig norsk språklærer med en varm og oppmuntrende tone. "
+            "Din målgruppe er nybegynnere som ønsker å lære konversasjonsnorsk for daglig bruk. "
+            "Du forklarer ting enkelt, gir eksempler, og bruker korte, praktiske setninger."),
+        "firstMessage": os.getenv("FIRST_MESSAGE", 
+            "Hei alle sammen, jeg heter Ola Norman, jeg er her for å hjelpe dere med å lære norsk."),
+        "maxSessionLength": int(os.getenv("MAX_SESSION_LENGTH", "3600")),
+        "maxIdleTime": int(os.getenv("MAX_IDLE_TIME", "300")),
+        "language": "no",
+        "customLLMConfig": {
+            "model": os.getenv("LLM_MODEL", "gpt-4o-mini"),
+            "baseURL": os.getenv("LLM_BASE_URL"),
+            "llmAPIKey": os.getenv("LLM_API_KEY")
+        }
+    }
+
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error making request to Simli API: {e}")
+        raise
+
+if __name__ == "__main__":
+    try:
+        result = start_e2e_session()
+        print("Session started successfully:")
+        print(result)
+    except Exception as e:
+        print(f"Failed to start session: {e}")
