@@ -49,6 +49,7 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
       language:"no",
       ttsModel:"eleven_multilingual_v2",
       ttsProvider:"ElevenLabs",
+      ttsAPIKey: process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY,
     }),
         
     })
