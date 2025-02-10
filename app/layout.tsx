@@ -7,8 +7,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Simli Agent",
-  description: "create-simli-agent",
+  title: "NorskPrøven",
+  description: "NorskPrøven er en KI agent som hjelper deg med å lære norsk",
 };
 
 export default function RootLayout({
