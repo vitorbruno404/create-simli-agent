@@ -4,6 +4,8 @@ import DailyIframe, { DailyCall } from "@daily-co/daily-js";
 import VideoBox from "@/app/Components/VideoBox";
 import cn from "./utils/TailwindMergeAndClsx";
 import IconSparkleLoader from "@/media/IconSparkleLoader";
+import ChatTranscript from "@/app/Components/ChatTranscript";
+import NoteEditor from "@/app/Components/NoteEditor";
 
 interface SimliAgentProps {
   onStart: () => void;
@@ -22,6 +24,7 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
   const [callObject, setCallObject] = useState<DailyCall | null>(null);
   const myCallObjRef = useRef<DailyCall | null>(null);
   const [chatbotId, setChatbotId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   /**
    * Create a new Simli room and join it using Daily
@@ -81,6 +84,12 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
 
     // Start checking if Simli's Chatbot Avatar is available
     loadChatbot();
+
+    setMessages([{
+      role: 'agent',
+      content: 'Hei alle sammen, jeg heter Ola Norman, jeg er her for å hjelpe dere med å lære norsk.',
+      timestamp: new Date().toLocaleTimeString()
+    }]);
   };  
 
   /**
@@ -138,11 +147,15 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
   return (
     <>
       {isAvatarVisible && (
-        <div className="h-[350px] w-[350px]">
+        <div className="flex flex-col items-center">
           <div className="h-[350px] w-[350px]">
             <DailyProvider callObject={callObject}>
               {chatbotId && <VideoBox key={chatbotId} id={chatbotId} />}
             </DailyProvider>
+          </div>
+          <div className="flex gap-4 mt-4">
+            <ChatTranscript messages={messages} />
+            <NoteEditor />
           </div>
         </div>
       )}
@@ -165,20 +178,18 @@ const SimliAgent: React.FC<SimliAgentProps> = ({ onStart, onClose }) => {
             )}
           </button>
         ) : (
-          <>
-            <div className="flex items-center gap-4 w-full">
-              <button
-                onClick={handleLeaveRoom}
-                className={cn(
-                  "mt-4 group text-white flex-grow bg-red hover:rounded-sm hover:bg-white h-[52px] px-6 rounded-[100px] transition-all duration-300"
-                )}
-              >
-                <span className="font-abc-repro-mono group-hover:text-black font-bold w-[164px] transition-all duration-300">
-                  takk, det var alt for nå
-                </span>
-              </button>
-            </div>
-          </>
+          <div className="flex items-center gap-4 w-full">
+            <button
+              onClick={handleLeaveRoom}
+              className={cn(
+                "mt-4 group text-white flex-grow bg-red hover:rounded-sm hover:bg-white h-[52px] px-6 rounded-[100px] transition-all duration-300"
+              )}
+            >
+              <span className="font-abc-repro-mono group-hover:text-black font-bold w-[164px] transition-all duration-300">
+                takk, det var alt for nå
+              </span>
+            </button>
+          </div>
         )}
       </div>
     </>
