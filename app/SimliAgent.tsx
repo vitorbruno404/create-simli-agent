@@ -6,6 +6,7 @@ import cn from "./utils/TailwindMergeAndClsx";
 import IconSparkleLoader from "@/media/IconSparkleLoader";
 import ChatTranscript from "@/app/Components/ChatTranscript";
 import NoteEditor from "@/app/Components/NoteEditor";
+import { Message } from "@/app/Components/types";
 
 interface SimliAgentProps {
   onStart: () => void;

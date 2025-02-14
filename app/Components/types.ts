@@ -17,3 +17,9 @@ export interface Avatar {
     audioStream: MediaStream | null;
   }
   
+  export interface Message {
+    role: 'agent' | 'user';
+    content: string;
+    timestamp: string;
+  }
+  
